@@ -2,6 +2,14 @@
 
 A Node.js server that generates images using AI models (Gemini 2.0 and OpenAI 4o). The server first generates a detailed description of the input image using Gemini, then creates a transformed image in the specified style.
 
+## Authentication
+All endpoints (except `/health`) require an API key to be included in the request headers:
+```
+X-API-Key: your_api_key_here
+```
+
+The API key should be set in your environment variables as `API_KEY`. Rate limiting is also implemented to prevent abuse (100 requests per IP per 15 minutes).
+
 ## Setup
 
 1. Install dependencies:
@@ -28,8 +36,18 @@ npm run dev
 
 ## API Endpoints
 
+### GET /health
+Health check endpoint. Does not require authentication.
+
+**Response Format:**
+```json
+{
+  "status": "ok"
+}
+```
+
 ### GET /styles
-Returns a list of available styles with their thumbnails and prompts.
+Returns a list of available styles with their thumbnails. Requires authentication.
 
 **Response Format:**
 ```json
@@ -38,9 +56,8 @@ Returns a list of available styles with their thumbnails and prompts.
   "styles": [
     {
       "id": "watercolor",
-      "name": "watercolor",
-      "thumbnail": "https://your-s3-bucket.s3.amazonaws.com/thumbnails/watercolor.jpg",
-      "prompt": "Transform this image into a beautiful watercolor painting..."
+      "name": "Watercolor",
+      "thumbnail": "https://your-s3-bucket.s3.amazonaws.com/thumbnails/watercolor.jpg"
     },
     // ... other styles
   ]
@@ -48,7 +65,13 @@ Returns a list of available styles with their thumbnails and prompts.
 ```
 
 ### POST /generate-image
-Generates a new image based on the input image and style.
+Generates a new image based on the input image and style. Requires authentication.
+
+**Request Headers:**
+```
+Content-Type: application/json
+X-API-Key: your_api_key_here
+```
 
 **Request Body:**
 ```json
@@ -77,7 +100,10 @@ Generates a new image based on the input image and style.
 ```json
 {
   "success": true,
-  "image": "base64_encoded_generated_image"
+  "image": {
+    "data": "base64_encoded_generated_image",
+    "type": "image/png"
+  }
 }
 ```
 
@@ -92,6 +118,7 @@ base64 -i input.jpg -o output.txt
 ```bash
 curl -X POST http://localhost:3000/generate-image \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: your_api_key_here" \
   -d '{
     "image": "base64_encoded_image_string",
     "style": "watercolor",
@@ -104,13 +131,12 @@ curl -X POST http://localhost:3000/generate-image \
 ```
 src/
 ├── constants/
-│   └── styles.js      # Style definitions and prompts
+│   └── styles.js      # Style metadata (names, thumbnails, prompts)
 ├── services/
 │   ├── geminiService.js   # Gemini API integration
 │   └── openaiService.js   # OpenAI API integration
 ├── utils/
-│   ├── imageUtils.js      # Image processing utilities
-│   └── validators.js      # Input validation
+│   └── imageUtils.js      # Image processing utilities
 └── server.js          # Main application entry point
 ```
 
@@ -120,6 +146,10 @@ src/
 - Images are handled as base64 strings to avoid file system operations.
 - The server validates input parameters before processing.
 - Style thumbnails are stored in S3 and referenced by their URLs.
+- The `/styles` endpoint returns a simplified view of available styles with their thumbnails.
+- The `/generate-image` endpoint returns the transformed image as a base64 string with its MIME type.
+- All endpoints (except `/health`) require API key authentication.
+- Rate limiting is enforced to prevent abuse.
 
 - The server uses base64 encoding for image handling
 - Input images are validated for proper base64 format
