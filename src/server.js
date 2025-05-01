@@ -49,7 +49,8 @@ app.get('/styles', authenticateApiKey, (req, res) => {
   const styles = Object.entries(STYLE_METADATA).map(([id, metadata]) => ({
     id,
     name: metadata.name,
-    thumbnail: metadata.thumbnail
+    thumbnail: metadata.thumbnail,
+    paid: metadata.paid
   }));
 
   res.json({
@@ -72,7 +73,6 @@ app.post('/generate-image', authenticateApiKey, async (req, res) => {
 
     // First, generate description using Gemini
     const description = await geminiService.generateDescription(image);
-    console.log('Generated description:', description);
 
     let generatedImage;
     
@@ -84,10 +84,7 @@ app.post('/generate-image', authenticateApiKey, async (req, res) => {
 
     res.json({ 
       success: true, 
-      image: {
-        data: generatedImage,
-        type: 'image/png'
-      }
+      image: generatedImage 
     });
   } catch (error) {
     console.error('Error:', error);
