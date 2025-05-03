@@ -34,7 +34,7 @@ const STYLE_METADATA = {
   ghibli: {
     name: 'Studio Ghibli',
     prompt: 'Convert to a Studio Ghibli style with soft textures and warm colors',
-    thumbnail: `${S3_BASE_URL}/ghibli-cat.png`,
+    thumbnail: `${S3_BASE_URL}/anime-cat.png`,
     paid: true
   },
   'comic-style': {
