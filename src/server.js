@@ -73,7 +73,8 @@ app.post('/generate-image', authenticateApiKey, async (req, res) => {
 
     // First, generate description using Gemini
     const description = await geminiService.generateDescription(image);
-
+    
+    console.log(description);
     let generatedImage;
     
     if (model === 'gemini') {
