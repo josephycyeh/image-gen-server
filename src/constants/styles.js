@@ -1,6 +1,12 @@
 const S3_BASE_URL = "https://image-gen-styles.s3.us-east-2.amazonaws.com";
 
 const STYLE_METADATA = {
+  anime: {
+    name: 'Anime',
+    prompt: 'an anime-style illustration with large expressive eyes, clean lineart, cel-shaded coloring, and stylized proportions. The artwork should feature vibrant colors, smooth gradients, minimal realistic shading, and the characteristic aesthetic of Japanese animation with sharp, defined edges.',
+    thumbnail: `${S3_BASE_URL}/anime-cat.png`,
+    paid: false
+  },
   'pencil-sketch': {
     name: 'Pencil Sketch',
     prompt: 'a detailed pencil sketch with fine graphite lines, cross-hatching for shadows, soft blending, and realistic proportions. The artwork should have the characteristic grainy texture of pencil on paper with varying line weights and subtle gradations from light to dark.',
@@ -17,19 +23,13 @@ const STYLE_METADATA = {
     name: 'Oil Painting',
     prompt: 'a rich oil painting with thick, textured brushstrokes (impasto technique), vibrant colors, and dramatic lighting. The artwork should have the characteristic depth and luminosity of oil paint with visible brush marks, layered colors, and a painterly quality reminiscent of classical masters.',
     thumbnail: `${S3_BASE_URL}/oil-painting-cat.png`,
-    paid: true
+    paid: false
   },
   realistic: {
     name: 'Realistic',
     prompt: 'a photorealistic artwork with precise details, accurate proportions, natural lighting and shadows, and lifelike textures. The image should have sharp focus, realistic colors, and the quality of a high-resolution photograph with perfect clarity and dimensional depth.',
     thumbnail: `${S3_BASE_URL}/realistic-cat.png`,
-    paid: true
-  },
-  anime: {
-    name: 'Anime',
-    prompt: 'an anime-style illustration with large expressive eyes, clean lineart, cel-shaded coloring, and stylized proportions. The artwork should feature vibrant colors, smooth gradients, minimal realistic shading, and the characteristic aesthetic of Japanese animation with sharp, defined edges.',
-    thumbnail: `${S3_BASE_URL}/anime-cat.png`,
-    paid: true
+    paid: false
   },
   ghibli: {
     name: 'Studio Ghibli',
