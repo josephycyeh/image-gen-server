@@ -18,7 +18,7 @@ class GeminiService {
         role: 'user',
         parts: [
           {
-            text: "Describe this sketch in detail. Focus on important but general details like objects, colors, placement. This description will be used in the next prompt so you can transform the image more accurately.",
+            text: "Describe this sketch in detail. Focus on general details like objects, colors, placement. This description will be used in the next prompt so you can transform the image more accurately.",
           },
           {
             inlineData: {
